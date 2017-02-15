@@ -1,5 +1,6 @@
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -25,7 +26,13 @@ public class PartOne {
     private static String MANUALTEST_WElCOME =
             "Выбран ручной тест. Вводите числа разделяя их чем угодно, кроме '\\', этот символ будет означать конец ввода массива.";
     private static String MANUALTEST_WElCOME1 = "Введите количество ячеек, на которые нужно сдвинуть массив вправо.";
-    private static String AUTOTEST_WElCOME = "Выбран автоматический тест. Сгенерированный массив: ";
+
+    private static String AUTOTEST_WElCOME = "Выбран автоматический тест.";
+    private static String AUTOTEST_N = "Сгенерированный размер массива: ";
+    private static String AUTOTEST_K = "Сгенерированный сдвиг массива: ";
+    private static String AUTOTEST_ARRAY = "Сгенерированный массив: ";
+
+    private static String SHUFFLED_ARRAY = "Сдвинутый массив: ";
 
     private static int UPPER_BOUND_N = 99;
 
@@ -61,23 +68,19 @@ public class PartOne {
     private void manualTest() {
         System.out.println(MANUALTEST_WElCOME);
         Scanner in = new Scanner(System.in);
-        Stream.Builder builder = Stream.builder();
-
+        List arr = new ArrayList();
         while (true) {
             String s = in.next();
             if (s.equals("\\")) {
                 break;
             }
-            builder.add(s);
+            arr.add(s);
         }
-        Stream arr = builder.build();
         System.out.println(MANUALTEST_WElCOME1);
         int k = in.nextInt();
 
-        arr.count();
-        arr.count();
-
         arr = shuffle(arr, k);
+        System.out.println(SHUFFLED_ARRAY);
         arr.forEach(i -> System.out.print(i + " "));
         System.out.println();
     }
@@ -86,32 +89,55 @@ public class PartOne {
         Random random = new Random();
         int n = random.nextInt(UPPER_BOUND_N + 1);
         int k = random.nextInt(UPPER_BOUND_K - LOWER_BOUND_K) + LOWER_BOUND_K;
-        Stream arr = random.ints(n, LOWER_BOUND_ARRAY_ELEMENT, UPPER_BOUND_ARRAY_ELEMENT).boxed();
+        List arr = (random.ints(n, LOWER_BOUND_ARRAY_ELEMENT, UPPER_BOUND_ARRAY_ELEMENT).boxed())
+                .collect(Collectors.toList());
 
         System.out.println(AUTOTEST_WElCOME);
+        System.out.println(AUTOTEST_N + n);
+        System.out.println(AUTOTEST_K + k);
+
+        System.out.println(AUTOTEST_ARRAY);
         arr.forEach(i -> System.out.print(i + " "));
         System.out.println();
 
         arr = shuffle(arr, k);
+
+        System.out.println(SHUFFLED_ARRAY);
         arr.forEach(i -> System.out.print(i + " "));
         System.out.println();
     }
 
-    public Stream shuffle(Stream arr, int k) {
+    public List shuffle(List arr, int k) {
+        int n = arr.size();
 
         if (k == 0) {
-            return arr;
+            return new ArrayList(arr);
         }
-        if (Math.abs(k) > arr.count() / 2) {
-            if (Math.abs(k) > arr.count()) {
-                k = (int) (k % arr.count());
-            } else {
-                k = -(int) (arr.count() - Math.abs(k));
+
+        if (Math.abs(k) > n) {
+            k = k % n;
+        }
+        if (Math.abs(k) > n / 2) {
+            k = -(n - Math.abs(k));
+        }
+
+        List result = new ArrayList(n);
+        if (k > 0) {
+            for (int i = n - k; i < n; i++) {
+                result.add(arr.get(i));
+            }
+            for (int i = 0; i < k; i++) {
+                result.add(arr.get(i));
+            }
+        } else {
+            k = -k;
+            for (int i = k; i < n - k; i++) {
+                result.add(arr.get(i));
+            }
+            for (int i = 0; i < k; i++) {
+                result.add(arr.get(i));
             }
         }
-
-        int tmp;
-
-        return arr;
+        return result;
     }
 }
