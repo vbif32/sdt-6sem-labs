@@ -29,7 +29,7 @@ namespace LabOne
     public class PartTwo
     {
         private const string Welcome =
-            "Выбрана первая часть. Выберите режим проверки: ручной(m) или автоматический(a). Для выхода введите 'q'.";
+            "Выбрана вторая часть. Выберите режим проверки: ручной(m) или автоматический(a). Для выхода введите 'q'.";
 
         private const string Manualtest = "m";
         private const string Autotest = "a";
@@ -46,7 +46,7 @@ namespace LabOne
         private const string UnpairedElement = "Непарный элемент: ";
 
         private const int LowerBoundN = 1;
-        private const int UpperBoundN = 1000000;
+        private const int UpperBoundN = 20;
 
         private const int LowerBoundArrayElement = 1;
         private const int UpperBoundArrayElement = 1000000000;
@@ -99,7 +99,7 @@ namespace LabOne
                 if (n % 2 == 0)
                     n--;
                 var arr = new List<int>(n);
-                for (var i = 1; i < n; i++)
+                for (var i = 1; i < n/2; i++)
                 {
                     var r = random.Next(LowerBoundArrayElement, UpperBoundArrayElement);
                     arr.Add(r);
@@ -134,7 +134,7 @@ namespace LabOne
 
         public object UnPair(List<int> arr)
         {
-            var result = arr[0];
+            var result = 0;
             return arr.Aggregate(result, (current, em) => current ^ em);
         }
 
