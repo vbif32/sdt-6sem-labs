@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,6 +32,11 @@ namespace LabOne
         private const string Welcome =
             "Выбрана вторая часть. Выберите режим проверки: ручной(m) или автоматический(a). Для выхода введите 'q'.";
 
+        private static readonly Hashtable AHashtable = new Hashtable
+        {
+            
+        };
+
         private const string Manualtest = "m";
         private const string Autotest = "a";
         private const string Quit = "q";
@@ -50,13 +56,15 @@ namespace LabOne
 
         private const int LowerBoundArrayElement = 1;
         private const int UpperBoundArrayElement = 1000000000;
-        
+
         public void Run()
         {
             while (true)
             {
                 Console.WriteLine();
                 Console.WriteLine(Welcome);
+
+                var test = new ArrayList() as object;
 
                 var partNumber = Console.ReadLine();
                 if (partNumber == Manualtest)
@@ -132,11 +140,8 @@ namespace LabOne
             }
         }
 
-        public object UnPair(List<int> arr)
-        {
-            var result = 0;
-            return arr.Aggregate(result, (current, em) => current ^ em);
-        }
+        public object UnPair(List<int> arr) =>
+            arr.Aggregate((current, em) => current ^ em);
 
         public List<T> Mix<T>(List<T> arr)
         {

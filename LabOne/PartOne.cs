@@ -90,7 +90,7 @@ namespace LabOne
             arr.ForEach(i => Console.Write(i + " "));
             Console.WriteLine();
 
-            arr = Shuffle(arr, k);
+            arr = Shift(arr, k);
             Console.WriteLine(ShuffledArray);
             arr.ForEach(i => Console.Write(i + " "));
             Console.WriteLine();
@@ -113,14 +113,14 @@ namespace LabOne
             arr.ForEach(i => Console.Write(i + " "));
             Console.WriteLine();
 
-            arr = Shuffle(arr, k);
+            arr = Shift(arr, k);
 
             Console.WriteLine(ShuffledArray);
             arr.ForEach(i => Console.Write(i + " "));
             Console.WriteLine();
         }
 
-        public List<T> Shuffle<T>(List<T> arr, int k)
+        public List<T> Shift<T>(List<T> arr, int k)
         {
             var n = arr.Count;
 
