@@ -6,11 +6,15 @@ namespace LabOne
     internal class ShuffleTest
     {
         private readonly Random _random = new Random();
-        private readonly int[,] _stat = new int[11, 11];
+        private readonly int[,] _stat = new int[Capacity+1, Capacity+1];
+
+        private const int Range = 10000;
+        private const int Capacity = 40;
+        private string format = $"{{0,{(Range/Capacity).ToString().Length+2}}}";
 
         public ShuffleTest()
         {
-            for (var i = 1; i < 11; i++)
+            for (var i = 1; i < Capacity+1; i++)
             {
                 _stat[0, i] = i;
                 _stat[i, 0] = i;
@@ -21,9 +25,11 @@ namespace LabOne
         {
             while (true)
             {
-                for (var i = 0; i < 10000; i++)
+                for (var i = 0; i < Range; i++)
                 {
-                    var arr = new List<int> {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+                    var arr = new List<int>();
+                    for (var k = 1; k <= Capacity; k++)
+                        arr.Add(k);
                     //Print(arr);
                     arr = Shuffle(arr);
                     //Print(arr);
@@ -61,10 +67,10 @@ namespace LabOne
         {
             Console.WriteLine();
             Console.WriteLine();
-            for (var i = 0; i < 11; i++)
+            for (var i = 0; i < Capacity + 1; i++)
             {
-                for (var j = 0; j < 11; j++)
-                    Console.Write("{0,6}", _stat[i, j]);
+                for (var j = 0; j < Capacity + 1; j++)
+                    Console.Write(format, _stat[i, j]);
                 Console.WriteLine();
             }
         }
@@ -73,8 +79,8 @@ namespace LabOne
         {
             Console.WriteLine();
             Console.WriteLine();
-            for (var i = 1; i < 11; i++)
-            for (var j = 1; j < 11; j++)
+            for (var i = 1; i < Capacity + 1; i++)
+            for (var j = 1; j < Capacity + 1; j++)
                 _stat[i, j] = 0;
         }
     }
