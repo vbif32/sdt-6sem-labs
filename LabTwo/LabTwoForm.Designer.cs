@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LabTwoForm));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(LabTwoForm));
             this.RecognitionTextBox = new System.Windows.Forms.TextBox();
             this.OpenFileButton = new System.Windows.Forms.Button();
             this.FilePathTextBox = new System.Windows.Forms.TextBox();
@@ -90,7 +90,6 @@
             this.FindedWordsGroupBox.TabIndex = 5;
             this.FindedWordsGroupBox.TabStop = false;
             this.FindedWordsGroupBox.Text = "Найденные слова";
-            this.FindedWordsGroupBox.Enter += new System.EventHandler(this.FindedWordsGroupBox_Enter);
             // 
             // RecognizedRichTextBox
             // 
@@ -143,6 +142,11 @@
             // FrequentWordsNumericUpDown
             // 
             this.FrequentWordsNumericUpDown.Location = new System.Drawing.Point(75, 258);
+            this.FrequentWordsNumericUpDown.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
             this.FrequentWordsNumericUpDown.Name = "FrequentWordsNumericUpDown";
             this.FrequentWordsNumericUpDown.Size = new System.Drawing.Size(44, 20);
             this.FrequentWordsNumericUpDown.TabIndex = 11;

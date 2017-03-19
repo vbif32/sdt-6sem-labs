@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -12,8 +13,6 @@ namespace LabTwo
         {
             InitializeComponent();
         }
-
-        private Dictionary<string, int> _words;
 
         private void OpenFileButton_Click(object sender, EventArgs e)
         {
@@ -32,35 +31,56 @@ namespace LabTwo
         private void FrequentWordsCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (FrequentWordsCheckBox.Checked)
-                BoldMostOftenWords();
+                BoldFrequentWords();
         }
 
         private void FrequentWordsNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             if (FrequentWordsCheckBox.Checked)
-                BoldMostOftenWords();
+                BoldFrequentWords();
         }
 
         private void CountButton_Click(object sender, EventArgs e)
         {
-            _words = PartOne.Split(RecognitionTextBox.Text);
+            var words = PartOne.Split(RecognitionTextBox.Text.Trim());
+            // зачем писать свою сортировку, если можно использовать стандартную?
+            words = words.OrderByDescending(i => i.Value);
+
+            // Но если уж писать, то проверить её работоспосбность все равно стоит
+            var keyValuePairs = words.ToList();
+            PartTwo.BucketSort(ref keyValuePairs);
+
             RecognizedRichTextBox.Text =
-                    _words.Select(i => i.Key + " " + i.Value + "\r\n").Aggregate((accumulate, s) => accumulate + s);
+                    words.Select(i => i.Key + " " + i.Value + "\r\n").Aggregate((accumulate, s) => accumulate + s);
 
             if (FrequentWordsCheckBox.Checked)
-                BoldMostOftenWords();
+                BoldFrequentWords();
         }
 
-        private void BoldMostOftenWords()
+        private void BoldFrequentWords()
         {
-            int i;
-            int.TryParse(FrequentWordsNumericUpDown.Text, out i);
-            if (i > 0 && _words != null)
-            {
-                var tmp = PartTwo.MostOfterWords(_words, i);
-            }
-            //TODO: допилить выделение
-        }
+            var rrtb = RecognizedRichTextBox;
+            var count = Decimal.ToInt32(FrequentWordsNumericUpDown.Value);
+            if (rrtb.Lines.Length == 0) return;
 
+            if (count > 0)
+            {
+                // выделяем
+                var boldLength = rrtb.Lines.Take(count).Select(i => i.Length).Aggregate((accumulate, s) => accumulate + s + 1);
+                rrtb.SelectionStart = 0;
+                rrtb.SelectionLength = boldLength;
+                rrtb.SelectionFont = new Font(RecognizedRichTextBox.Font, FontStyle.Bold);
+
+                if (count >= rrtb.Lines.Length) return;
+            }
+
+            // возвращаем обычный для следующего текста
+            var normalLength = rrtb.Lines.Skip(count).Select(i => i.Length).Aggregate((accumulate, s) => accumulate + s + 1);
+            rrtb.SelectionStart = RecognizedRichTextBox.SelectionStart + RecognizedRichTextBox.SelectionLength;
+            rrtb.SelectionLength = normalLength;
+            rrtb.SelectionFont = RecognizedRichTextBox.Font;
+
+            rrtb.Select(0,0);
+        }
     }
 }

@@ -9,101 +9,78 @@ namespace LabTwo
     ///     Из полученного результата выбрать K самых часто встречающихся слов.
     ///     Решение оформить в виде функции, которая принимает данные по словам и возвращает массив самых частых слов.
     ///     Вычислительная сложность — O(N* ln(K)) или O(N), где N — число слов.
+    /// 
+    ///     Модуль не используется, но работает. Причины указаны непосредственно над функциями
     /// </summary>
     internal class PartTwo
     {
-
-        public static Dictionary<T, int> MostOfterWords<T>(Dictionary<T, int> array, int digits)
+        /// <summary>
+        /// Чтобы вернуть часто встречающихся слов нужно, эти слова как-то найти.
+        /// А чтобы найти их меньше чем за O(n*k) (просто выбирая максимальный и перемещая его в возвращаемый массив)
+        /// нужно данные как-то отсортировать.
+        ///  
+        /// В моей реализации эта функция малополезна, т.к. отсортировать массив, а потом выделять его начало проще и эффективней
+        /// чем при каждом изменении заново сортировать массив (даже если его часть, что допустимо при некоторых сортировках).
+        /// А потом еще и искать нужное место в исходном массиве для выделения.
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, int>> MostOftenWords(IEnumerable<KeyValuePair<string, int>> words,
+            int count)
         {
-            //TODO: допилить вторую часть
-            var arr = Sort(array.Values.ToArray());
-            return null;
+            var keyValuePairs = words.ToList();
+            BucketSort(ref keyValuePairs);
+            return keyValuePairs.Take(count);
         }
 
 
-        private static int[] Sort(int[] array) => RadixSortAux(array, 1);
-
-        private static int[] RadixSortAux(int[] array, int digit)
+        /// <summary>
+        /// Собственно сама тоже сортировка не используется, т.к. зачем писать свою сортировку, если можно использовать стандартную?
+        /// 
+        /// Но если уж писать, то как-то используя особенности входных данных.
+        /// Для начала, мы сортируем числа, которые соответствуют частоте встречаемости слов в тексте.
+        /// Это значит, что N в большинстве случаев относительно небольшое ( в Войне и мире использовано всего 8998 уникальных слов)
+        /// и что большая часть чисел повторяется и находятся в небольшом промежутке (в соответствии с законом Ципфа).
+        /// Поэтому в целом было бы вполне допустимо использовать сортировку Вставками, однако О(n2) не подходит под задание.
+        /// 
+        /// Значит присмотримся к сортировкам за линейное время и выберем самую простую для реализации,
+        /// мне таковой показалась Карманная сортировка.
+        /// 
+        /// P.S. можно было использовать сортировки, которые сортируют начиная с наибольших элементов, например Пирамидальную
+        /// но она не выгодна на малом количестве данных
+        /// </summary>
+        public static void BucketSort(ref List<KeyValuePair<string, int>> items)
         {
-            while (true)
+            if (items == null || items.Count() < 2)
+                return;
+
+            var maxValue = items[0].Value;
+            var minValue = items[0].Value;
+
+            for (var i = 1; i < items.Count(); i++)
             {
-                var empty = true;
-                var digits = new KvEntry[array.Length]; //array that holds the digits;
-                var sortedArray = new int[array.Length]; //Hold the sorted array
-                for (var i = 0; i < array.Length; i++)
-                {
-                    digits[i] = new KvEntry();
-                    digits[i].Key = i;
-                    digits[i].Value = array[i] / digit % 10;
-                    if (array[i] / digit != 0)
-                        empty = false;
-                }
+                if (items[i].Value > maxValue)
+                    maxValue = items[i].Value;
 
-                if (empty)
-                    return array;
-
-                var sortedDigits = CountingSort(digits);
-                for (var i = 0; i < sortedArray.Length; i++)
-                    sortedArray[i] = array[sortedDigits[i].Key];
-                array = sortedArray;
-                digit = digit * 10;
-            }
-        }
-
-        private static KvEntry[] CountingSort(KvEntry[] arrayA)
-        {
-            var arrayB = new int[MaxValue(arrayA) + 1];
-            var arrayC = new KvEntry[arrayA.Length];
-
-            for (var i = 0; i < arrayB.Length; i++)
-                arrayB[i] = 0;
-
-            foreach (var t in arrayA)
-                arrayB[t.Value]++;
-
-            for (var i = 1; i < arrayB.Length; i++)
-                arrayB[i] += arrayB[i - 1];
-
-            for (var i = arrayA.Length - 1; i >= 0; i--)
-            {
-                var value = arrayA[i].Value;
-                var index = arrayB[value];
-                arrayB[value]--;
-                arrayC[index - 1] = new KvEntry
-                {
-                    Key = i,
-                    Value = value
-                };
-            }
-            return arrayC;
-        }
-
-        private static int MaxValue(KvEntry[] arr)
-        {
-            var max = arr[0].Value;
-            for (var i = 1; i < arr.Length; i++)
-                if (arr[i].Value > max)
-                    max = arr[i].Value;
-            return max;
-        }
-
-        private struct KvEntry
-        {
-            private int _key;
-
-            public int Key
-            {
-                get { return _key; }
-                set
-                {
-                    if (_key >= 0)
-                        _key = value;
-                    else
-                        throw new Exception("Invalid key value");
-                }
+                if (items[i].Value < minValue)
+                    minValue = items[i].Value;
             }
 
-            public int Value { get; set; }
+            var bucket = new List<KeyValuePair<string, int>>[maxValue - minValue + 1];
+
+            for (var i = 0; i < bucket.Length; i++)
+                bucket[i] = new List<KeyValuePair<string, int>>();
+
+            foreach (var t in items)
+                bucket[t.Value - minValue].Add(t);
+
+            var position = 0;
+            foreach (var t in bucket)
+                if (t.Count > 0)
+                    foreach (var t1 in t)
+                    {
+                        items[position] = t1;
+                        position++;
+                    }
         }
+
     }
 }

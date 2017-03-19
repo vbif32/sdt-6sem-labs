@@ -19,19 +19,19 @@ namespace LabTwo
     /// </summary>
     public class PartOne
     {
-        public static Dictionary<string, int> Split(Stream s) => Split(s.ToString());
+        public static IEnumerable<KeyValuePair <string, int>> Split(Stream s) => Split(s.ToString());
 
         /// <summary>
         /// Отдельно стоящие числа считаются словами
         /// </summary>
-        public static Dictionary<string, int> Split(string s)
+        public static IEnumerable<KeyValuePair <string, int>> Split(string s)
         {
             const string pattern = @"\W+";
             var wordList = Regex.Split(s, pattern);
             var grouped = wordList
                 .GroupBy(i => i)
-                .Select(i => new {Word = i.Key, Count = i.Count()})
-                .ToDictionary(i => i.Word, v => v.Count);
+                .Select(i => new KeyValuePair<string, int>(i.Key, i.Count()))
+                .Where(i => !string.IsNullOrWhiteSpace(i.Key)); // при отсутствии этого условия иногда получается группа из пустой строки ""
 
             return grouped;
         }
