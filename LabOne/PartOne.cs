@@ -85,7 +85,7 @@ namespace LabOne
                 Console.WriteLine(ManualTestInputK);
                 s = Console.ReadLine();
             }
-            
+
             Console.WriteLine(ManualTestArray);
             arr.ForEach(i => Console.Write(i + " "));
             Console.WriteLine();

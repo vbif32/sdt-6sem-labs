@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -51,7 +50,7 @@ namespace LabTwo
             PartTwo.BucketSort(ref keyValuePairs);
 
             RecognizedRichTextBox.Text =
-                    words.Select(i => i.Key + " " + i.Value + "\r\n").Aggregate((accumulate, s) => accumulate + s);
+                words.Select(i => i.Key + " " + i.Value + "\r\n").Aggregate((accumulate, s) => accumulate + s);
 
             if (FrequentWordsCheckBox.Checked)
                 BoldFrequentWords();
@@ -60,13 +59,14 @@ namespace LabTwo
         private void BoldFrequentWords()
         {
             var rrtb = RecognizedRichTextBox;
-            var count = Decimal.ToInt32(FrequentWordsNumericUpDown.Value);
+            var count = decimal.ToInt32(FrequentWordsNumericUpDown.Value);
             if (rrtb.Lines.Length == 0) return;
 
             if (count > 0)
             {
                 // выделяем
-                var boldLength = rrtb.Lines.Take(count).Select(i => i.Length).Aggregate((accumulate, s) => accumulate + s + 1);
+                var boldLength =
+                    rrtb.Lines.Take(count).Select(i => i.Length).Aggregate((accumulate, s) => accumulate + s + 1);
                 rrtb.SelectionStart = 0;
                 rrtb.SelectionLength = boldLength;
                 rrtb.SelectionFont = new Font(RecognizedRichTextBox.Font, FontStyle.Bold);
@@ -75,12 +75,13 @@ namespace LabTwo
             }
 
             // возвращаем обычный для следующего текста
-            var normalLength = rrtb.Lines.Skip(count).Select(i => i.Length).Aggregate((accumulate, s) => accumulate + s + 1);
+            var normalLength =
+                rrtb.Lines.Skip(count).Select(i => i.Length).Aggregate((accumulate, s) => accumulate + s + 1);
             rrtb.SelectionStart = RecognizedRichTextBox.SelectionStart + RecognizedRichTextBox.SelectionLength;
             rrtb.SelectionLength = normalLength;
             rrtb.SelectionFont = RecognizedRichTextBox.Font;
 
-            rrtb.Select(0,0);
+            rrtb.Select(0, 0);
         }
     }
 }

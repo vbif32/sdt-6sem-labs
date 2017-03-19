@@ -6,36 +6,32 @@ using System.Linq;
 namespace LabOne
 {
     /// <summary>
-    ///  Часть 2.
-    /// Дан массив A, нечетной длины N. Каждый элемент в массиве имеет пару с таким же значением, за исключением одного элемента, который остается без пары.
-    /// Например:
-    /// A[0] = 3
-    /// A[1] = 3
-    /// A[2] = 1
-    /// A[3] = 2
-    /// A[4] = 1
-    /// A[5] = 1
-    /// A[6] = 2
-    /// Элементы A[0] и A[1] парные.
-    /// Элементы A[2] и A[4] парные.
-    /// Элементы A[3] и A[6] парные.
-    /// Элемент A[5] со значением 1 не имеет пары.
-    /// Написать функцию, которая возвращает значение элемента, который не имеет пары.
-    /// N находится в интервале [1..1 000 000], каждый элемент массива A в интервале [1..1 000 000 000].
-    /// В идеальном варианте:
-    /// Вычислительная сложность — O(N), используемая память — O(1).
-    /// Допустимо:
-    /// Вычислительная сложность — O(N ln N), используемая память — O(N).
+    ///     Часть 2.
+    ///     Дан массив A, нечетной длины N. Каждый элемент в массиве имеет пару с таким же значением, за исключением одного
+    ///     элемента, который остается без пары.
+    ///     Например:
+    ///     A[0] = 3
+    ///     A[1] = 3
+    ///     A[2] = 1
+    ///     A[3] = 2
+    ///     A[4] = 1
+    ///     A[5] = 1
+    ///     A[6] = 2
+    ///     Элементы A[0] и A[1] парные.
+    ///     Элементы A[2] и A[4] парные.
+    ///     Элементы A[3] и A[6] парные.
+    ///     Элемент A[5] со значением 1 не имеет пары.
+    ///     Написать функцию, которая возвращает значение элемента, который не имеет пары.
+    ///     N находится в интервале [1..1 000 000], каждый элемент массива A в интервале [1..1 000 000 000].
+    ///     В идеальном варианте:
+    ///     Вычислительная сложность — O(N), используемая память — O(1).
+    ///     Допустимо:
+    ///     Вычислительная сложность — O(N ln N), используемая память — O(N).
     /// </summary>
     public class PartTwo
     {
         private const string Welcome =
             "Выбрана вторая часть. Выберите режим проверки: ручной(m) или автоматический(a). Для выхода введите 'q'.";
-
-        private static readonly Hashtable AHashtable = new Hashtable
-        {
-            
-        };
 
         private const string Manualtest = "m";
         private const string Autotest = "a";
@@ -56,6 +52,8 @@ namespace LabOne
 
         private const int LowerBoundArrayElement = 1;
         private const int UpperBoundArrayElement = 1000000000;
+
+        private readonly Random _random = new Random();
 
         public void Run()
         {
@@ -107,7 +105,7 @@ namespace LabOne
                 if (n % 2 == 0)
                     n--;
                 var arr = new List<int>(n);
-                for (var i = 1; i < n/2; i++)
+                for (var i = 1; i < n / 2; i++)
                 {
                     var r = random.Next(LowerBoundArrayElement, UpperBoundArrayElement);
                     arr.Add(r);
@@ -115,7 +113,7 @@ namespace LabOne
                 }
                 arr.Add(random.Next(LowerBoundArrayElement, UpperBoundArrayElement));
 
-                arr = Mix(arr);
+                arr = Shuffle(arr);
 
                 Console.WriteLine(AutotestWelCome);
                 if (arr.Count < 100)
@@ -124,7 +122,9 @@ namespace LabOne
                     arr.ForEach(i => Console.Write(i + " "));
                 }
                 else
+                {
                     Console.WriteLine(AutotestArrayCount + arr.Count);
+                }
 
                 Console.WriteLine();
 
@@ -143,13 +143,12 @@ namespace LabOne
         public object UnPair(List<int> arr) =>
             arr.Aggregate((current, em) => current ^ em);
 
-        public List<T> Mix<T>(List<T> arr)
+        public List<T> Shuffle<T>(List<T> arr)
         {
             var result = new List<T>(arr);
-            var random = new Random();
             for (var i = 0; i < result.Count; i++)
             {
-                var rnd = random.Next(result.Count);
+                var rnd = _random.Next(result.Count);
                 var tmp = result[i];
                 result[i] = result[rnd];
                 result[rnd] = tmp;
