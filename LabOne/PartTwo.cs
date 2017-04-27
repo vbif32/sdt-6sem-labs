@@ -39,7 +39,8 @@ namespace LabOne
         private const string Error = "Ошибочный ввод";
 
         private const string ManualtestWelCome =
-            "Выбран ручной тест. Проверка введенный данных не проводится! Введение данных, неудовлетворяющим условиям могут вызвать ошибки. Вводите числа разделяя пробелом, символ '\\' будет означать конец ввода массива.";
+                "Выбран ручной тест. Проверка введенный данных не проводится! Введение данных, неудовлетворяющим условиям могут вызвать ошибки. Вводите числа разделяя пробелом, символ '\\' будет означать конец ввода массива."
+            ;
 
         private const string AutotestWelCome = "Выбран автоматический тест.";
         private const string AutotestArray = "Сгенерированный массив: ";
@@ -140,8 +141,10 @@ namespace LabOne
             }
         }
 
-        public object UnPair(List<int> arr) =>
-            arr.Aggregate((current, em) => current ^ em);
+        public object UnPair(List<int> arr)
+        {
+            return arr.Aggregate((current, em) => current ^ em);
+        }
 
         public List<T> Shuffle<T>(List<T> arr)
         {

@@ -27,9 +27,8 @@ namespace LabFour
 
         private void CountButton_Click(object sender, EventArgs e)
         {
-            var strings = RecognitionTextBox.Text.Split(new[]{"\n","\r"}, StringSplitOptions.RemoveEmptyEntries);
+            var strings = RecognitionTextBox.Text.Split(new[] {"\n", "\r"}, StringSplitOptions.RemoveEmptyEntries);
             RecognizedRichTextBox.Text = LabFour.FindSimilarities(strings);
         }
-
     }
 }

@@ -23,7 +23,8 @@ namespace LabOne
         private const string ErrorInput = "Ошибочный ввод";
 
         private const string ManualtestWelCome =
-            "Выбран ручной тест. Вводите элементы массива по одному в строке, символ '\\' будет означать конец ввода массива.";
+                "Выбран ручной тест. Вводите элементы массива по одному в строке, символ '\\' будет означать конец ввода массива."
+            ;
 
         private const string ManualTestInputK = "Введите количество ячеек, на которые нужно сдвинуть массив вправо.";
         private const string ManualTestArray = "Введенный массив:";

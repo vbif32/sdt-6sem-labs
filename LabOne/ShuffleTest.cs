@@ -5,16 +5,15 @@ namespace LabOne
 {
     internal class ShuffleTest
     {
-        private readonly Random _random = new Random();
-        private readonly int[,] _stat = new int[Capacity+1, Capacity+1];
-
         private const int Range = 10000;
         private const int Capacity = 40;
-        private string format = $"{{0,{(Range/Capacity).ToString().Length+2}}}";
+        private readonly Random _random = new Random();
+        private readonly int[,] _stat = new int[Capacity + 1, Capacity + 1];
+        private readonly string format = $"{{0,{(Range / Capacity).ToString().Length + 2}}}";
 
         public ShuffleTest()
         {
-            for (var i = 1; i < Capacity+1; i++)
+            for (var i = 1; i < Capacity + 1; i++)
             {
                 _stat[0, i] = i;
                 _stat[i, 0] = i;

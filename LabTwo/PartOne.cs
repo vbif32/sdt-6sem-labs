@@ -19,7 +19,10 @@ namespace LabTwo
     /// </summary>
     public class PartOne
     {
-        public static IEnumerable<KeyValuePair<string, int>> Split(Stream s) => Split(s.ToString());
+        public static IEnumerable<KeyValuePair<string, int>> Split(Stream s)
+        {
+            return Split(s.ToString());
+        }
 
         /// <summary>
         ///     Отдельно стоящие числа считаются словами
@@ -29,10 +32,10 @@ namespace LabTwo
             const string pattern = @"\W+";
             var wordList = Regex.Split(s, pattern);
             var grouped = wordList
-                    .GroupBy(i => i)
-                    .Select(i => new KeyValuePair<string, int>(i.Key, i.Count()))
-                    .Where(i => !string.IsNullOrWhiteSpace(i.Key));
-                // при отсутствии этого условия иногда получается группа из пустой строки ""
+                .GroupBy(i => i)
+                .Select(i => new KeyValuePair<string, int>(i.Key, i.Count()))
+                .Where(i => !string.IsNullOrWhiteSpace(i.Key));
+            // при отсутствии этого условия иногда получается группа из пустой строки ""
 
             return grouped;
         }

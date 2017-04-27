@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace LabThree
 {
@@ -67,28 +65,28 @@ namespace LabThree
         }
         */
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             // part 1
-            var permutation1 = new List<int> { 1, 2, 3, 4, 5, 6 };
+            var permutation1 = new List<int> {1, 2, 3, 4, 5, 6};
             PrintList(permutation1);
             Console.WriteLine(permutation1.IsPermutation(Config.ArProgIncDiff_1)
                 ? IsPermutationTrue
                 : IsPermutationFalse);
 
-            var permutation2 = new List<int> { 8, 12, 6, 9, 11, 7, 10 };
+            var permutation2 = new List<int> {8, 12, 6, 9, 11, 7, 10};
             PrintList(permutation2);
             Console.WriteLine(permutation2.IsPermutation(Config.ArProgIncDiff_1)
                 ? IsPermutationTrue
                 : IsPermutationFalse);
 
-            var notPermutation1 = new List<int> { 1, 2, 3, 4, 5, 5 };
+            var notPermutation1 = new List<int> {1, 2, 3, 4, 5, 5};
             PrintList(notPermutation1);
             Console.WriteLine(notPermutation1.IsPermutation(Config.ArProgIncDiff_1)
                 ? IsPermutationTrue
                 : IsPermutationFalse);
 
-            var notPermutation2 = new List<int> { 1, 2, 3, 4, 5, 12 };
+            var notPermutation2 = new List<int> {1, 2, 3, 4, 5, 12};
             PrintList(notPermutation2);
             Console.WriteLine(notPermutation2.IsPermutation(Config.ArProgIncDiff_1)
                 ? IsPermutationTrue
@@ -111,8 +109,8 @@ namespace LabThree
             // part 3
             var rand = new Random();
             var list = new List<int> {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-            var header = new List<int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-            for (int i = 0; i < Int32.MaxValue/10; i++)
+            var header = new List<int> {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+            for (var i = 0; i < int.MaxValue / 10; i++)
             {
                 var k = rand.Next(10);
                 list[k]++;
@@ -129,7 +127,7 @@ namespace LabThree
             Console.ReadKey();
         }
 
-        static IList<int> ReadInts()
+        private static IList<int> ReadInts()
         {
             var list = new List<int>();
             while (true)
@@ -144,11 +142,11 @@ namespace LabThree
 
         private static void PrintList<T>(ICollection<T> list)
         {
-            var Range = Int32.MaxValue/10;
+            var Range = int.MaxValue / 10;
             var Capacity = 10;
-            string format = $"{{0,{(Range / Capacity).ToString().Length + 2}}}";
+            var format = $"{{0,{(Range / Capacity).ToString().Length + 2}}}";
             foreach (var elem in list)
-                Console.Write(format,elem + " ");
+                Console.Write(format, elem + " ");
             Console.WriteLine();
         }
     }
