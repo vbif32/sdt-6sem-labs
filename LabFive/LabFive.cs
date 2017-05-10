@@ -59,6 +59,7 @@ namespace LabFive
                 "раз два"
             };
 
+
             foreach (var s in SwapTestStrings)
                 Console.WriteLine(Patterns.Swap(s));
             Console.ReadKey();
